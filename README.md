@@ -1,58 +1,223 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Gambia Crop Price Tracker
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A full-stack web application that displays real-time crop prices across major markets in The Gambia. Built to help farmers and traders make informed decisions without having to travel between markets.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## The Problem
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Most farmers in The Gambia sell at whatever price a middleman offers because they have no visibility into what prices look like in other markets. This app solves that by showing weekly crop prices across Serrekunda, Brikama, Farafenni, and Basse markets in one place.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Layer | Technology |
+|---|---|
+| Backend | Laravel 12 (PHP) |
+| Database | MySQL |
+| Frontend | React + Vite |
+| Styling | Tailwind CSS v4 |
+| Charts | Chart.js + react-chartjs-2 |
+| API Communication | Axios |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Project Structure
 
-## Agentic Development
+```
+gambia-price-tracker/          ← Laravel backend
+├── app/
+│   ├── Http/Controllers/Api/
+│   │   └── PriceController.php
+│   └── Models/
+│       ├── Crop.php
+│       ├── Market.php
+│       └── Price.php
+├── database/
+│   ├── migrations/
+│   │   ├── create_markets_table.php
+│   │   ├── create_crops_table.php
+│   │   └── create_prices_table.php
+│   └── seeders/
+│       ├── MarketSeeder.php
+│       ├── CropSeeder.php
+│       └── PriceSeeder.php
+├── routes/
+│   └── api.php
+└── config/
+    └── cors.php
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+gambia-price-tracker-frontend/ ← React frontend
+├── src/
+│   ├── api/
+│   │   └── index.js
+│   ├── components/
+│   │   ├── PriceTable.jsx
+│   │   ├── BarChart.jsx
+│   │   └── LineChart.jsx
+│   ├── pages/
+│   │   └── Home.jsx
+│   └── App.jsx
+└── vite.config.js
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## Database Schema
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### markets
+| Column | Type | Description |
+|---|---|---|
+| id | bigint | Primary key |
+| name | string | Market name (e.g. Serrekunda Market) |
+| region | string | Region in Gambia |
+| created_at / updated_at | timestamp | Auto-managed |
 
-## Code of Conduct
+### crops
+| Column | Type | Description |
+|---|---|---|
+| id | bigint | Primary key |
+| name | string | Crop name (e.g. Groundnut) |
+| unit | string | Unit of measurement (e.g. per kg) |
+| created_at / updated_at | timestamp | Auto-managed |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### prices
+| Column | Type | Description |
+|---|---|---|
+| id | bigint | Primary key |
+| crop_id | foreign key | References crops table |
+| market_id | foreign key | References markets table |
+| amount | decimal(10,2) | Price in GMD |
+| recorded_at | date | Date the price was observed |
+| created_at / updated_at | timestamp | Auto-managed |
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## API Endpoints
 
-## License
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /api/crops | Returns all crops |
+| GET | /api/markets | Returns all markets |
+| GET | /api/prices | Returns all prices with crop and market details |
+| GET | /api/prices/{cropId} | Returns prices for a specific crop |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Example Response — GET /api/prices/1
+
+```json
+[
+  {
+    "id": 1,
+    "crop_id": 1,
+    "market_id": 1,
+    "amount": "50.00",
+    "recorded_at": "2026-04-03",
+    "crop": {
+      "id": 1,
+      "name": "Groundnut",
+      "unit": "per kg"
+    },
+    "market": {
+      "id": 1,
+      "name": "Serrekunda Market",
+      "region": "West Coast Region"
+    }
+  }
+]
+```
+
+---
+
+## Getting Started
+
+### Requirements
+
+- PHP 8.2+
+- Composer
+- Node.js 18+
+- MySQL
+
+### Backend Setup
+
+```bash
+# Clone and install dependencies
+composer create-project laravel/laravel gambia-price-tracker
+cd gambia-price-tracker
+
+# Configure your .env file
+DB_CONNECTION=mysql
+DB_DATABASE=gambia_price_tracker
+DB_USERNAME=root
+DB_PASSWORD=your_password
+
+# Install API routes and Sanctum
+php artisan install:api
+
+# Run migrations and seed data
+php artisan migrate --seed
+
+# Start the server
+php artisan serve
+```
+
+### Frontend Setup
+
+```bash
+# Create React app
+npm create vite@latest gambia-price-tracker-frontend -- --template react
+cd gambia-price-tracker-frontend
+
+# Install dependencies
+npm install axios chart.js react-chartjs-2
+npm install tailwindcss @tailwindcss/vite
+
+# Start the dev server
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+---
+
+## Features
+
+- View current crop prices across all 4 major Gambian markets
+- Filter prices by crop using a dropdown selector
+- Bar chart comparing prices across markets for any selected crop
+- Line chart showing price trends over time
+- Mobile-responsive layout
+
+---
+
+## Markets Covered
+
+- Serrekunda Market — West Coast Region
+- Brikama Market — West Coast Region
+- Farafenni Market — North Bank Region
+- Basse Market — Upper River Region
+
+## Crops Tracked
+
+- Groundnut
+- Millet
+- Maize
+- Rice
+- Onion
+
+---
+
+## Roadmap
+
+- [ ] Admin panel with JWT authentication (Phase 3)
+- [ ] Price submission form for market reporters
+- [ ] SMS/WhatsApp price alerts
+- [ ] Community submissions with moderation
+- [ ] Mobile app (React Native)
+
+---
+
+## Author
+
+Built by a junior developer based in Serrekunda, The Gambia.  
+A civic-tech project aimed at empowering farmers and traders with market information.
