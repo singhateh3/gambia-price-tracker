@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             MarketSeeder::class,
             CropSeeder::class,
             PriceSeeder::class,
+            AdminSeeder::class,
         ]);
     }
 }

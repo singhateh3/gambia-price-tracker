@@ -192,7 +192,7 @@ The app will be available at `http://localhost:5173`
 
 ## Markets Covered
 
-- Serrekunda Market — West Coast Region
+- Serrekunda Market — Kanifing Municipality
 - Brikama Market — West Coast Region
 - Farafenni Market — North Bank Region
 - Basse Market — Upper River Region
@@ -219,5 +219,5 @@ The app will be available at `http://localhost:5173`
 
 ## Author
 
-Built by a junior developer based in Serrekunda, The Gambia.  
+Built by Ebrima Singhateh, a junior developer based in Serrekunda, The Gambia.  
 A civic-tech project aimed at empowering farmers and traders with market information.
