@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: gambia-price-tracker-api
+    env: php
+    buildCommand: composer install --optimize-autoloader --no-dev && php artisan config:cache && php artisan route:cache && php artisan migrate --force --seed
+    startCommand: php artisan serve --host=0.0.0.0 --port=10000
+    envVars:
+      - key: APP_NAME
+        value: "Gambia Price Tracker"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        value: base64:fe5gWzihqaVIhklefYrMo0oi4lTSPrpt5LJmVIQTkko=
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: mysql-c21d8c4-ebrimasinghateh67-ebe5.i.aivencloud.com
+      - key: DB_PORT
+        value: 21684
+      - key: DB_DATABASE
+        value: defaultdb
+      - key: DB_USERNAME
+        value: avnadmin
+      - key: DB_PASSWORD
+        sync: false
