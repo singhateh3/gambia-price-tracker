@@ -4,8 +4,8 @@ return [
     'paths' => ['api/*'],
     'allowed_methods' => ['*'],
     'allowed_origins' => [
-        'https://your-vercel-app.vercel.app',
-    ],
+    'https://gambia-price-tracker-frontend.vercel.app',
+],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
