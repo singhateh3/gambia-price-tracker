@@ -1,3 +1,8 @@
+## Live Demo
+
+- Frontend: https://your-vercel-app.vercel.app
+- API: https://gambia-price-tracker-api.onrender.com
+
 # Gambia Crop Price Tracker
 
 A full-stack web application that displays real-time crop prices across major markets in The Gambia. Built to help farmers and traders make informed decisions without having to travel between markets.
@@ -12,14 +17,14 @@ Most farmers in The Gambia sell at whatever price a middleman offers because the
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Backend | Laravel 12 (PHP) |
-| Database | MySQL |
-| Frontend | React + Vite |
-| Styling | Tailwind CSS v4 |
-| Charts | Chart.js + react-chartjs-2 |
-| API Communication | Axios |
+| Layer             | Technology                 |
+| ----------------- | -------------------------- |
+| Backend           | Laravel 12 (PHP)           |
+| Database          | MySQL                      |
+| Frontend          | React + Vite               |
+| Styling           | Tailwind CSS v4            |
+| Charts            | Chart.js + react-chartjs-2 |
+| API Communication | Axios                      |
 
 ---
 
@@ -67,63 +72,66 @@ gambia-price-tracker-frontend/ ← React frontend
 ## Database Schema
 
 ### markets
-| Column | Type | Description |
-|---|---|---|
-| id | bigint | Primary key |
-| name | string | Market name (e.g. Serrekunda Market) |
-| region | string | Region in Gambia |
-| created_at / updated_at | timestamp | Auto-managed |
+
+| Column                  | Type      | Description                          |
+| ----------------------- | --------- | ------------------------------------ |
+| id                      | bigint    | Primary key                          |
+| name                    | string    | Market name (e.g. Serrekunda Market) |
+| region                  | string    | Region in Gambia                     |
+| created_at / updated_at | timestamp | Auto-managed                         |
 
 ### crops
-| Column | Type | Description |
-|---|---|---|
-| id | bigint | Primary key |
-| name | string | Crop name (e.g. Groundnut) |
-| unit | string | Unit of measurement (e.g. per kg) |
-| created_at / updated_at | timestamp | Auto-managed |
+
+| Column                  | Type      | Description                       |
+| ----------------------- | --------- | --------------------------------- |
+| id                      | bigint    | Primary key                       |
+| name                    | string    | Crop name (e.g. Groundnut)        |
+| unit                    | string    | Unit of measurement (e.g. per kg) |
+| created_at / updated_at | timestamp | Auto-managed                      |
 
 ### prices
-| Column | Type | Description |
-|---|---|---|
-| id | bigint | Primary key |
-| crop_id | foreign key | References crops table |
-| market_id | foreign key | References markets table |
-| amount | decimal(10,2) | Price in GMD |
-| recorded_at | date | Date the price was observed |
-| created_at / updated_at | timestamp | Auto-managed |
+
+| Column                  | Type          | Description                 |
+| ----------------------- | ------------- | --------------------------- |
+| id                      | bigint        | Primary key                 |
+| crop_id                 | foreign key   | References crops table      |
+| market_id               | foreign key   | References markets table    |
+| amount                  | decimal(10,2) | Price in GMD                |
+| recorded_at             | date          | Date the price was observed |
+| created_at / updated_at | timestamp     | Auto-managed                |
 
 ---
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | /api/crops | Returns all crops |
-| GET | /api/markets | Returns all markets |
-| GET | /api/prices | Returns all prices with crop and market details |
-| GET | /api/prices/{cropId} | Returns prices for a specific crop |
+| Method | Endpoint             | Description                                     |
+| ------ | -------------------- | ----------------------------------------------- |
+| GET    | /api/crops           | Returns all crops                               |
+| GET    | /api/markets         | Returns all markets                             |
+| GET    | /api/prices          | Returns all prices with crop and market details |
+| GET    | /api/prices/{cropId} | Returns prices for a specific crop              |
 
 ### Example Response — GET /api/prices/1
 
 ```json
 [
-  {
-    "id": 1,
-    "crop_id": 1,
-    "market_id": 1,
-    "amount": "50.00",
-    "recorded_at": "2026-04-03",
-    "crop": {
-      "id": 1,
-      "name": "Groundnut",
-      "unit": "per kg"
-    },
-    "market": {
-      "id": 1,
-      "name": "Serrekunda Market",
-      "region": "West Coast Region"
+    {
+        "id": 1,
+        "crop_id": 1,
+        "market_id": 1,
+        "amount": "50.00",
+        "recorded_at": "2026-04-03",
+        "crop": {
+            "id": 1,
+            "name": "Groundnut",
+            "unit": "per kg"
+        },
+        "market": {
+            "id": 1,
+            "name": "Serrekunda Market",
+            "region": "West Coast Region"
+        }
     }
-  }
 ]
 ```
 
