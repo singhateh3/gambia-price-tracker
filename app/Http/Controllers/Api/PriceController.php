@@ -12,9 +12,16 @@ use Illuminate\Http\Request;
 
 class PriceController extends Controller
 {
-    public function index(){
-        return Price::with(['crop', 'market'])->orderBy('recorded_at', 'desc')->paginate(10);
+   public function index()
+{
+    try {
+        return Price::with(['crop', 'market'])
+            ->orderBy('recorded_at', 'desc')
+            ->paginate(10);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+}
 
     public function byCrop($cropId) {
     return Price::with(['crop', 'market'])
