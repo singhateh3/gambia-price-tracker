@@ -21,4 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
         'store', 'update', 'destroy'
     ]);
 });
-
+Route::get('/test-db', function () {
+    return \Illuminate\Support\Facades\DB::connection()->getPdo();
+});
